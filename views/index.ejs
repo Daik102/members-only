@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<% if (currentUser) { %>
+  <section class="card">
+    <h3>Post a Secret Message</h3>
+    <form action="/posts" method="POST">
+      <label>Title</label>
+      <input type="text" name="title" required maxlength="150" />
+      <label>Message</label>
+      <textarea name="content" rows="3" required></textarea>
+      <button type="submit">Publish Post</button>
+    </form>
+  </section>
+<% } else { %>
+  <p><em>Log in or sign up to post messages and reveal who wrote each post!</em></p>
+<% } %>
+
+<h2>Clubhouse Feed</h2>
+
+<% if (posts.length === 0) { %>
+  <p>No posts yet.</p>
+<% } %>
+
+<% posts.forEach(post => { %>
+  <article class="card">
+    <h3><%= post.title %></h3>
+    <p><%= post.content %></p>
+
+    <div class="meta">
+      Posted by: 
+      <strong><%= currentUser ? post.author : 'Anonymous (Log in to reveal)' %></strong>
+      &bull; <%= new Date(post.created_at).toLocaleDateString() %>
+    </div>
+
+    <% if (currentUser && (currentUser.id === post.user_id || currentUser.is_admin)) { %>
+      <form action="/posts/<%= post.id %>/delete" method="POST" style="margin-top: 0.75rem;">
+        <button type="submit">Delete Post</button>
+      </form>
+    <% } %>
+  </article>
+<% }) %>
+
+<%- include('partials/footer') %>
