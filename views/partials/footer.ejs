@@ -1,5 +1,46 @@
+  <dialog id="delete-dialog" style="border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; max-width: 400px; width: 90%;">
+    <h3 style="margin-top: 0;">Confirm Deletion</h3>
+    <p>Are you sure you want to delete <strong id="delete-post-title"></strong>? This action cannot be undone.</p>
+
+    <form id="delete-form" method="POST" style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+      <button type="button" id="cancel-delete">Cancel</button>
+      <button type="submit" style="background: #dc2626; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+        Yes, Delete
+      </button>
+    </form>
+  </dialog>
+
   <footer style="margin-top: 3rem; border-top: 1px solid #ddd; padding-top: 1rem; font-size: 0.85rem; color: #666;">
     Clubhouse Auth Demo &mdash; Render + Neon + Express
   </footer>
+
+  <script>
+    const deleteDialog = document.getElementById('delete-dialog');
+    const deleteForm = document.getElementById('delete-form');
+    const deletePostTitle = document.getElementById('delete-post-title');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+
+    document.querySelectorAll('.delete-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const postId = btn.dataset.postId;
+        const postTitle = btn.dataset.postTitle;
+
+        deletePostTitle.textContent = `"${postTitle}"`;
+        deleteForm.action = `/posts/${postId}/delete`;
+        deleteDialog.showModal();
+      });
+    });
+
+    cancelDeleteBtn.addEventListener('click', () => {
+      deleteDialog.close();
+    });
+
+    // Optional: Close when clicking outside the dialog box on the backdrop
+    deleteDialog.addEventListener('click', (e) => {
+      if (e.target === deleteDialog) {
+        deleteDialog.close();
+      }
+    });
+  </script>
 </body>
 </html>
