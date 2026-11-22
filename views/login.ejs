@@ -1,18 +1,33 @@
 <%- include('partials/header') %>
 
 <h2>Log In</h2>
+
+<% if (errors && errors.length > 0) { %>
+  <div class="alert">
+    <ul style="margin: 0; padding-left: 1.25rem;">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
 <form action="/login" method="POST">
   <label for="username">Username</label>
-  <input id="username" type="text" name="username" required />
+  <input
+    id="username"
+    type="text"
+    name="username"
+    value="<%= oldInput.username || '' %>"
+    
+  />
 
   <label for="password">Password</label>
-  <input id="password" type="password" name="password" required />
+  <input id="password" type="password" name="password"  />
 
   <button type="submit">Log In</button>
 </form>
-<% if (currentUser) { %>
-  <p><%=errorMessage %></p>
-<% } %>
+
 <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
 
 <%- include('partials/footer') %>

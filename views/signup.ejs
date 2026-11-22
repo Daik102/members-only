@@ -1,12 +1,53 @@
 <%- include('partials/header') %>
 
 <h2>Create an Account</h2>
+
+<% if (errors && errors.length > 0) { %>
+  <div class="alert">
+    <ul style="margin: 0; padding-left: 1.25rem;">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
 <form action="/signup" method="POST">
+  <label for="first_name">First Name</label>
+  <input
+    id="first_name"
+    type="text"
+    name="first_name"
+    value="<%= oldInput.first_name || '' %>"
+    required
+    maxlength="50"
+  />
+
+  <label for="last_name">Last Name</label>
+  <input
+    id="last_name"
+    type="text"
+    name="last_name"
+    value="<%= oldInput.last_name || '' %>"
+    required
+    maxlength="50"
+  />
+
   <label for="username">Username</label>
-  <input id="username" type="text" name="username" required maxlength="50" />
+  <input
+    id="username"
+    type="text"
+    name="username"
+    value="<%= oldInput.username || '' %>"
+    required
+    maxlength="50"
+  />
 
   <label for="password">Password (min 6 characters)</label>
   <input id="password" type="password" name="password" required minlength="6" />
+
+  <label for="confirmPassword">Confirm Password</label>
+  <input id="confirmPassword" type="password" name="confirmPassword" required minlength="6" />
 
   <button type="submit">Sign Up</button>
 </form>
