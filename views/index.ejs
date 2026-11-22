@@ -1,21 +1,18 @@
 <%- include('partials/header') %>
 
-<% if (currentUser) { %>
-  <section class="card">
-    <h3>Post a Secret Message</h3>
-    <form action="/posts" method="POST">
-      <label>Title</label>
-      <input type="text" name="title" required maxlength="150" />
-      <label>Message</label>
-      <textarea name="content" rows="3" required></textarea>
-      <button type="submit">Publish Post</button>
-    </form>
-  </section>
-<% } else { %>
-  <p><em>Log in or sign up to post messages and reveal who wrote each post!</em></p>
-<% } %>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+  <h2 style="margin: 0;">Clubhouse Feed</h2>
 
-<h2>Clubhouse Feed</h2>
+  <% if (currentUser) { %>
+    <a href="/posts/new" style="background: #1e293b; color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
+      + New Post
+    </a>
+  <% } %>
+</div>
+
+<% if (!currentUser) { %>
+  <p><em><a href="/login">Log in</a> or <a href="/signup">sign up</a> to post messages and reveal who wrote each post!</em></p>
+<% } %>
 
 <% if (posts.length === 0) { %>
   <p>No posts yet.</p>
