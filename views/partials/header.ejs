@@ -5,32 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Secret Clubhouse</title>
   <link rel="stylesheet" href="/styles.css">
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
-    nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 1rem; margin-bottom: 2rem; }
-    .alert { background: #fee2e2; color: #991b1b; padding: 0.75rem; border-radius: 4px; margin-bottom: 1rem; }
-    .card { border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
-    .meta { font-size: 0.85rem; color: #555; }
-    .badge { background: #1e293b; color: #fff; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; }
-    form.inline { display: inline; }
-    input, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; margin-bottom: 1rem; box-sizing: border-box; }
-  </style>
 </head>
 <body>
-  <nav>
-    <a href="/"><strong>Secret Clubhouse</strong></a>
-    <div>
+  <nav class="navbar">
+    <a href="/" class="brand">Secret Clubhouse</a>
+    <div class="nav-links">
       <% if (currentUser) { %>
         <span>
-          Hi, <strong><%= currentUser.username %></strong>
+          Hi, <span class="username"><%= currentUser.username %></span>
           <% if (currentUser.is_admin) { %> <span class="badge">ADMIN</span> <% } %>
         </span>
-        <form action="/logout" method="POST" class="inline" style="margin-left: 1rem;">
-          <button type="submit">Log Out</button>
+        <form action="/logout" method="POST" class="inline-form">
+          <button type="submit" class="btn">Log Out</button>
         </form>
       <% } else { %>
-        <a href="/login" style="margin-right: 1rem;">Log In</a>
-        <a href="/signup">Sign Up</a>
+        <a href="/login" class="btn">Log In</a>
+        <a href="/signup" class="btn">Sign Up</a>
       <% } %>
     </div>
   </nav>

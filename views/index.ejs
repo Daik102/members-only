@@ -1,17 +1,17 @@
 <%- include('partials/header') %>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-  <h2 style="margin: 0;">Clubhouse Feed</h2>
+<div class="feed-header">
+  <h2>Clubhouse Feed</h2>
 
   <% if (currentUser) { %>
-    <a href="/posts/new" style="background: #1e293b; color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
-      + New Post
-    </a>
+    <a href="/posts/new" class="btn btn-primary">+ New Post</a>
   <% } %>
 </div>
 
 <% if (!currentUser) { %>
-  <p><em><a href="/login">Log in</a> or <a href="/signup">sign up</a> to post messages and reveal who wrote each post!</em></p>
+  <p class="guest-notice">
+    <a href="/login">Log in</a> or <a href="/signup">sign up</a> to post messages and reveal who wrote each post!
+  </p>
 <% } %>
 
 <% if (posts.length === 0) { %>
@@ -24,16 +24,16 @@
     <p><%= post.content %></p>
 
     <div class="meta">
-      Posted by: 
-      <strong><%= currentUser ? post.author : 'Anonymous (Log in to reveal)' %></strong>
+      Posted by:
+      <span class="author-name"><%= currentUser ? post.author : 'Anonymous (Log in to reveal)' %></span>
       &bull; <%= new Date(post.created_at).toLocaleDateString() %>
     </div>
 
     <% if (currentUser && (currentUser.id === post.user_id || currentUser.is_admin)) { %>
-      <div style="margin-top: 0.75rem;">
+      <div class="card-actions">
         <button
           type="button"
-          class="delete-btn"
+          class="btn btn-danger delete-btn"
           data-post-id="<%= post.id %>"
           data-post-title="<%= post.title %>"
         >

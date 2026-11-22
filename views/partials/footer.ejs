@@ -1,16 +1,14 @@
-  <dialog id="delete-dialog" style="border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; max-width: 400px; width: 90%;">
-    <h3 style="margin-top: 0;">Confirm Deletion</h3>
+  <dialog id="delete-dialog" class="modal">
+    <h3>Confirm Deletion</h3>
     <p>Are you sure you want to delete <strong id="delete-post-title"></strong>? This action cannot be undone.</p>
 
-    <form id="delete-form" method="POST" style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
-      <button type="button" id="cancel-delete">Cancel</button>
-      <button type="submit" style="background: #dc2626; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
-        Yes, Delete
-      </button>
+    <form id="delete-form" method="POST" class="modal-actions">
+      <button type="button" id="cancel-delete" class="btn">Cancel</button>
+      <button type="submit" class="btn btn-danger">Yes, Delete</button>
     </form>
   </dialog>
 
-  <footer style="margin-top: 3rem; border-top: 1px solid #ddd; padding-top: 1rem; font-size: 0.85rem; color: #666;">
+  <footer>
     Clubhouse Auth Demo &mdash; Render + Neon + Express
   </footer>
 
