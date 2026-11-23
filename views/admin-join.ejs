@@ -1,7 +1,7 @@
 <%- include('partials/header') %>
 
 <h2>Become an Admin</h2>
-<p class="guest-notice">Enter the admin passcode to unlock full moderation privileges (delete any post, view all authors and dates).</p>
+<p class="guest-notice">Enter the admin passcode to unlock full privileges (delete any post, view all authors and dates).</p>
 
 <% if (errors && errors.length > 0) { %>
   <div class="alert">
@@ -21,8 +21,12 @@
 
   <div class="form-actions">
     <button type="submit" class="btn btn-primary">Unlock Admin</button>
-    <a href="/">Cancel</a>
+    <a href="/" class="btn">Cancel</a>
   </div>
 </form>
+
+<div class="very-secret-container">
+  <p id="very-secret-area" class="very-secret-area">Very Secret Area</p>
+</div>
 
 <%- include('partials/footer') %>
