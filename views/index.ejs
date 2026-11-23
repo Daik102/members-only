@@ -16,7 +16,7 @@
   </p>
 <% } else if (!canSeeDetails) { %>
   <p class="guest-notice">
-    You are logged in as a guest member. <a href="/join">Enter the secret passcode</a> to reveal authors and dates!
+    You are logged in as a guest member. <a href="/join">Enter the secret passcode</a> to reveal authors and dates.
   </p>
 <% } %>
 
@@ -40,12 +40,11 @@
           data-post-id="<%= post.id %>"
           data-post-title="<%= post.title %>"
         >
-          Delete Post
+          Delete
         </button>
       </div>
     <% } %>
   </article>
 <% }) %>
-
 
 <%- include('partials/footer') %>
