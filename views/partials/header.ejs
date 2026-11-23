@@ -20,18 +20,18 @@
           <% } %>
         </span>
         <% if (!currentUser.is_member && !currentUser.is_admin) { %>
-          <a href="/join">Join Club</a>
+          <a href="/join" class="btn">Join Club</a>
         <% } %>
         <% if (currentUser.is_admin) { %>
-          <a href="/admin">Dashboard</a>
+          <a href="/admin" class="btn">Dashboard</a>
         <% } else { %>
-          <a href="/admin-join">Admin</a>
+          <a href="/admin-join" class="btn">Admin</a>
         <% } %>
         <form action="/logout" method="POST" class="inline-form">
           <button type="submit" class="btn">Log Out</button>
         </form>
       <% } else { %>
-        <a href="/login">Log In</a>
+        <a href="/login" class="btn">Log In</a>
         <a href="/signup" class="btn btn-primary">Sign Up</a>
       <% } %>
     </div>
