@@ -8,7 +8,7 @@
     </form>
   </dialog>
 
-  <footer>
+  <footer class="site-footer">
     Clubhouse Auth Demo &mdash; Render + Neon + Express
   </footer>
 
@@ -33,7 +33,7 @@
       deleteDialog.close();
     });
 
-    // Optional: Close when clicking outside the dialog box on the backdrop
+    // Close when clicking outside the dialog box on the backdrop
     deleteDialog.addEventListener('click', (e) => {
       if (e.target === deleteDialog) {
         deleteDialog.close();
