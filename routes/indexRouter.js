@@ -21,6 +21,19 @@ const postValidation = [
     .withMessage('Post message cannot exceed 2000 characters.'),
 ];
 
+const memberValidation = [
+  body('passcode')
+    .trim()
+    .notEmpty()
+    .withMessage('Please enter the secret passcode.')
+    .custom((value) => {
+      if (value !== process.env.CLUB_PASSCODE) {
+        throw new Error('Incorrect secret passcode.');
+      }
+      return true;
+    }),
+  ];
+
 // Public feed
 router.get('/', async (req, res, next) => {
   try {
@@ -91,6 +104,31 @@ router.post('/posts/:id/delete', ensureAuthenticated, async (req, res, next) => 
     }
 
     await pool.query('DELETE FROM posts WHERE id = $1', [postId]);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/join', ensureAuthenticated, (req, res) => {
+  if (req.user.is_member || req.user.is_admin) {
+    return res.redirect('/');
+  }
+  res.render('join', { errors: [] });
+});
+
+router.post('/join', ensureAuthenticated, memberValidation, async (req, res, next) => {
+  if (req.user.is_member || req.user.is_admin) {
+    return res.redirect('/');
+  }
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render('join', { errors: errors.array() });
+  }
+
+  try {
+    await pool.query('UPDATE users SET is_member = TRUE WHERE id = $1', [req.user.id]);
     res.redirect('/');
   } catch (err) {
     next(err);

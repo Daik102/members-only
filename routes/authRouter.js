@@ -91,7 +91,7 @@ router.post('/signup', ensureGuest, signupValidation, async (req, res, next) => 
     const { rows } = await pool.query(
       `INSERT INTO users (first_name, last_name, username, password_hash)
        VALUES ($1, $2, $3, $4)
-       RETURNING id, username, is_admin`,
+       RETURNING id, username, is_member, is_admin`,
       [first_name, last_name, username, passwordHash]
     );
     const newUser = rows[0];

@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+
+<h2>Join the Secret Clubhouse</h2>
+<p class="guest-notice">Enter the secret passcode to reveal post authors and timestamps.</p>
+
+<% if (errors && errors.length > 0) { %>
+  <div class="alert">
+    <ul>
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form action="/join" method="POST">
+  <div class="form-group">
+    <label for="passcode">Secret Passcode</label>
+    <input id="passcode" type="password" name="passcode" required />
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Unlock Membership</button>
+    <a href="/">Cancel</a>
+  </div>
+</form>
+
+<%- include('partials/footer') %>

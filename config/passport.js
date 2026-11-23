@@ -33,7 +33,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     // Only select safe fields (never attach password_hash to req.user)
-    const { rows } = await pool.query('SELECT id, username, is_admin FROM users WHERE id = $1', [id]);
+    const { rows } = await pool.query('SELECT id, username, is_member, is_admin FROM users WHERE id = $1', [id]);
     const user = rows[0];
     
     done(null, user || false);

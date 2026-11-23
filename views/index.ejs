@@ -8,14 +8,16 @@
   <% } %>
 </div>
 
+<% const canSeeDetails = currentUser && (currentUser.is_member || currentUser.is_admin); %>
+
 <% if (!currentUser) { %>
   <p class="guest-notice">
-    <a href="/login">Log in</a> or <a href="/signup">sign up</a> to post messages and reveal who wrote each post!
+    <a href="/login">Log in</a> or <a href="/signup">sign up</a> to post messages.
   </p>
-<% } %>
-
-<% if (posts.length === 0) { %>
-  <p>No posts yet.</p>
+<% } else if (!canSeeDetails) { %>
+  <p class="guest-notice">
+    You are logged in as a guest member. <a href="/join">Enter the secret passcode</a> to reveal authors and dates!
+  </p>
 <% } %>
 
 <% posts.forEach(post => { %>
@@ -25,8 +27,9 @@
 
     <div class="meta">
       Posted by:
-      <span class="author-name"><%= currentUser ? post.author : 'Anonymous (Log in to reveal)' %></span>
-      &bull; <%= new Date(post.created_at).toLocaleDateString() %>
+      <span class="author-name"><%= canSeeDetails ? post.author : 'Anonymous' %></span>
+      &bull;
+      <%= canSeeDetails ? new Date(post.created_at).toLocaleDateString() : '**/**/****' %>
     </div>
 
     <% if (currentUser && (currentUser.id === post.user_id || currentUser.is_admin)) { %>
@@ -43,5 +46,6 @@
     <% } %>
   </article>
 <% }) %>
+
 
 <%- include('partials/footer') %>

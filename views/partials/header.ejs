@@ -13,8 +13,16 @@
       <% if (currentUser) { %>
         <span>
           Hi, <span class="username"><%= currentUser.username %></span>
-          <% if (currentUser.is_admin) { %> <span class="badge">ADMIN</span> <% } %>
+          <% if (currentUser.is_admin) { %>
+            <span class="badge">ADMIN</span>
+          <% } else if (currentUser.is_member) { %>
+            <span class="badge">MEMBER</span>
+          <% } %>
         </span>
+
+      <% if (!currentUser.is_member && !currentUser.is_admin) { %>
+        <a href="/join" class="btn">Join Club</a>
+      <% } %>
         <form action="/logout" method="POST" class="inline-form">
           <button type="submit" class="btn">Log Out</button>
         </form>
