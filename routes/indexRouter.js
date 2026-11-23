@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { pool } from '../config/db.js';
-import { ensureAuthenticated } from '../middleware/auth.js';
+import { ensureAuthenticated, ensureAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -171,6 +171,63 @@ router.post('/admin-join', ensureAuthenticated, adminValidation, async (req, res
       [req.user.id]
     );
     res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
+// --- ADMIN DASHBOARD ---
+router.get('/admin', ensureAdmin, async (req, res, next) => {
+  try {
+    // Select safe columns only (never select password_hash)
+    const { rows: users } = await pool.query(`
+      SELECT id, first_name, last_name, username, is_member, is_admin, created_at
+      FROM users
+      ORDER BY id ASC
+    `);
+    res.render('admin', { users });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Toggle Member status for a user
+router.post('/admin/users/:id/toggle-member', ensureAdmin, async (req, res, next) => {
+  try {
+    const targetId = req.params.id;
+    await pool.query(
+      'UPDATE users SET is_member = NOT is_member WHERE id = $1',
+      [targetId]
+    );
+    res.redirect('/admin');
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Toggle Admin status for another user
+router.post('/admin/users/:id/toggle-admin', ensureAdmin, async (req, res, next) => {
+  try {
+    const targetId = Number(req.params.id);
+
+    // Prevent an admin from accidentally removing their own admin status
+    if (targetId === req.user.id) {
+      return res.status(400).render('error', {
+        status: 400,
+        title: 'Bad Request',
+        message: 'You cannot revoke your own admin privileges.',
+      });
+    }
+
+    // Promoting to admin also grants member status; demoting keeps member status intact
+    await pool.query(
+      `UPDATE users
+       SET is_admin = NOT is_admin,
+           is_member = CASE WHEN NOT is_admin THEN TRUE ELSE is_member END
+       WHERE id = $1`,
+      [targetId]
+    );
+    res.redirect('/admin');
   } catch (err) {
     next(err);
   }

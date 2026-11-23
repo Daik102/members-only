@@ -1,0 +1,65 @@
+<%- include('partials/header') %>
+
+<div class="feed-header">
+  <h2>Admin Dashboard</h2>
+  <a href="/" class="btn">&larr; Back to Feed</a>
+</div>
+
+<p class="guest-notice">Manage clubhouse members and administrator permissions.</p>
+
+<div class="table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Joined</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.first_name %> <%= user.last_name %></td>
+          <td class="username"><%= user.username %></td>
+          <td>
+            <% if (user.is_admin) { %>
+              <span class="badge">ADMIN</span>
+            <% } else if (user.is_member) { %>
+              <span class="badge">MEMBER</span>
+            <% } else { %>
+              <span class="badge badge-muted">GUEST</span>
+            <% } %>
+          </td>
+          <td><%= new Date(user.created_at).toLocaleDateString() %></td>
+          <td>
+            <div class="table-actions">
+              <% if (!user.is_admin) { %>
+                <form action="/admin/users/<%= user.id %>/toggle-member" method="POST" class="inline-form">
+                  <button type="submit" class="btn btn-sm">
+                    <%= user.is_member ? 'Revoke Member' : 'Make Member' %>
+                  </button>
+                </form>
+              <% } %>
+
+              <% if (user.id !== currentUser.id) { %>
+                <form action="/admin/users/<%= user.id %>/toggle-admin" method="POST" class="inline-form">
+                  <button type="submit" class="btn btn-sm">
+                    <%= user.is_admin ? 'Revoke Admin' : 'Make Admin' %>
+                  </button>
+                </form>
+              <% } else { %>
+                <span class="meta">(You)</span>
+              <% } %>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>

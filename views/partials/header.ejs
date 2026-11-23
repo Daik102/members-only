@@ -19,15 +19,14 @@
             <span class="badge">MEMBER</span>
           <% } %>
         </span>
-
         <% if (!currentUser.is_member && !currentUser.is_admin) { %>
           <a href="/join">Join Club</a>
         <% } %>
-
-        <% if (!currentUser.is_admin) { %>
+        <% if (currentUser.is_admin) { %>
+          <a href="/admin">Dashboard</a>
+        <% } else { %>
           <a href="/admin-join">Admin</a>
         <% } %>
-
         <form action="/logout" method="POST" class="inline-form">
           <button type="submit" class="btn">Log Out</button>
         </form>

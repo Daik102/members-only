@@ -23,10 +23,7 @@ export function ensureGuest(req, res, next) {
 }
 
 export function ensureAdmin(req, res, next) {
-  if (req.isAuthenticated() && req.user.is_admin) {
-    return next();
-  }
-
+  if (req.isAuthenticated() && req.user.is_admin) return next();
   res.status(403).render('error', {
     status: 403,
     title: 'Forbidden',
