@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+
+<h2>Become an Admin</h2>
+<p class="guest-notice">Enter the admin passcode to unlock full moderation privileges (delete any post, view all authors and dates).</p>
+
+<% if (errors && errors.length > 0) { %>
+  <div class="alert">
+    <ul>
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form action="/admin-join" method="POST">
+  <div class="form-group">
+    <label for="passcode">Admin Passcode</label>
+    <input id="passcode" type="password" name="passcode" required />
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Unlock Admin</button>
+    <a href="/">Cancel</a>
+  </div>
+</form>
+
+<%- include('partials/footer') %>

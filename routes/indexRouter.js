@@ -32,7 +32,20 @@ const memberValidation = [
       }
       return true;
     }),
-  ];
+];
+
+const adminValidation = [
+  body('passcode')
+    .trim()
+    .notEmpty()
+    .withMessage('Please enter the admin passcode.')
+    .custom((value) => {
+      if (value !== process.env.ADMIN_PASSCODE) {
+        throw new Error('Incorrect admin passcode.');
+      }
+      return true;
+    }),
+];
 
 // Public feed
 router.get('/', async (req, res, next) => {
@@ -129,6 +142,34 @@ router.post('/join', ensureAuthenticated, memberValidation, async (req, res, nex
 
   try {
     await pool.query('UPDATE users SET is_member = TRUE WHERE id = $1', [req.user.id]);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/admin-join', ensureAuthenticated, (req, res) => {
+  if (req.user.is_admin) {
+    return res.redirect('/');
+  }
+  res.render('admin-join', { errors: [] });
+});
+
+router.post('/admin-join', ensureAuthenticated, adminValidation, async (req, res, next) => {
+  if (req.user.is_admin) {
+    return res.redirect('/');
+  }
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render('admin-join', { errors: errors.array() });
+  }
+
+  try {
+    await pool.query(
+      'UPDATE users SET is_admin = TRUE, is_member = TRUE WHERE id = $1',
+      [req.user.id]
+    );
     res.redirect('/');
   } catch (err) {
     next(err);
