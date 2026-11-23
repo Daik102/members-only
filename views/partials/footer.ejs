@@ -1,15 +1,15 @@
   <dialog id="delete-dialog" class="modal">
     <h3>Confirm Deletion</h3>
-    <p>Are you sure you want to delete <strong id="delete-post-title"></strong>? This action cannot be undone.</p>
+    <p>Are you sure to delete <span id="delete-post-title"></span>?</p>
 
     <form id="delete-form" method="POST" class="modal-actions">
-      <button type="button" id="cancel-delete" class="btn">Cancel</button>
-      <button type="submit" class="btn btn-danger">Yes, Delete</button>
+      <button type="button" id="cancel-delete" class="btn">Back</button>
+      <button type="submit" class="btn btn-danger">Delete</button>
     </form>
   </dialog>
 
   <footer class="site-footer">
-    Clubhouse Auth Demo &mdash; Render + Neon + Express
+    <a href="https://daik102.github.io/homepage/">2026 Daik</a>
   </footer>
 
   <script>
@@ -17,6 +17,8 @@
     const deleteForm = document.getElementById('delete-form');
     const deletePostTitle = document.getElementById('delete-post-title');
     const cancelDeleteBtn = document.getElementById('cancel-delete');
+    const secretArea = document.getElementById('secret-area');
+    const verySecretArea = document.getElementById('very-secret-area');
 
     document.querySelectorAll('.delete-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -38,6 +40,26 @@
       if (e.target === deleteDialog) {
         deleteDialog.close();
       }
+    });
+
+    secretArea.addEventListener('mouseenter', () => {
+      secretArea.textContent = 'opensesame';
+      secretArea.classList.add('white-bg');
+    });
+
+    secretArea.addEventListener('mouseleave', () => {
+      secretArea.textContent = 'Secret Area';
+      secretArea.classList.remove('white-bg');
+    });
+
+    verySecretArea.addEventListener('mouseenter', () => {
+      verySecretArea.textContent = 'masterkey123';
+      verySecretArea.classList.add('white-bg');
+    });
+
+    verySecretArea.addEventListener('mouseleave', () => {
+      verySecretArea.textContent = 'Very Secret Area';
+      verySecretArea.classList.remove('white-bg');
     });
   </script>
 </body>
