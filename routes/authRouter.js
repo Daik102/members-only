@@ -30,12 +30,14 @@ const signupValidation = [
     .withMessage('Username is required.')
     .isLength({  max: 50 })
     .withMessage('Username cannot exceed 50 characters.')
-    // Custom async validator to check if username already exists in Postgres!
+    // Custom async validator to check if username already exists in Postgres
     .custom(async (value) => {
       const { rows } = await pool.query('SELECT id FROM users WHERE username = $1', [value]);
+
       if (rows.length > 0) {
         throw new Error('That username is already taken.');
       }
+
       return true;
     }),
 
@@ -48,6 +50,7 @@ const signupValidation = [
       if (value !== req.body.password) {
         throw new Error('Passwords do not match.');
       }
+
       return true;
     }),
 ];
@@ -76,7 +79,7 @@ router.post('/signup', ensureGuest, signupValidation, async (req, res, next) => 
   // 1. Check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    // Re-render form with error messages and preserved user inputs (never send passwords back!)
+    // Re-render form with error messages and preserved user inputs (never send passwords back)
     return res.status(400).render('signup', {
       errors: errors.array(),
       oldInput: { first_name, last_name, username },
@@ -98,9 +101,15 @@ router.post('/signup', ensureGuest, signupValidation, async (req, res, next) => 
 
     // 4. Automatically log in the new user and save session before redirecting
     req.login(newUser, (err) => {
-      if (err) return next(err);
+      if (err) {
+        return next(err);
+      }
+
       req.session.save((saveErr) => {
-        if (saveErr) return next(saveErr);
+        if (saveErr) {
+          return next(saveErr);
+        }
+
         res.redirect('/');
       });
     });
@@ -128,7 +137,9 @@ router.post('/login', ensureGuest, loginValidation, (req, res, next) => {
 
   // 2. Run Passport authentication
   passport.authenticate('local', (err, user, info) => {
-    if (err) return next(err);
+    if (err) {
+      return next(err);
+    }
 
     if (!user) {
       // Re-render with Passport's failure message in the same `errors` format
@@ -139,9 +150,15 @@ router.post('/login', ensureGuest, loginValidation, (req, res, next) => {
     }
 
     req.login(user, (loginErr) => {
-      if (loginErr) return next(loginErr);
+      if (loginErr) {
+        return next(loginErr);
+      }
+
       req.session.save((saveErr) => {
-        if (saveErr) return next(saveErr);
+        if (saveErr) {
+          return next(saveErr);
+        }
+
         res.redirect('/');
       });
     });
@@ -151,7 +168,10 @@ router.post('/login', ensureGuest, loginValidation, (req, res, next) => {
 // --- LOG OUT ---
 router.post('/logout', (req, res, next) => {
   req.logout((err) => {
-    if (err) return next(err);
+    if (err) {
+      return next(err);
+    }
+    
     req.session.destroy(() => {
       res.clearCookie('connect.sid');
       res.redirect('/login');

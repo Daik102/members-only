@@ -30,6 +30,7 @@ const memberValidation = [
       if (value !== process.env.CLUB_PASSCODE) {
         throw new Error('Incorrect secret passcode.');
       }
+
       return true;
     }),
 ];
@@ -43,6 +44,7 @@ const adminValidation = [
       if (value !== process.env.ADMIN_PASSCODE) {
         throw new Error('Incorrect admin passcode.');
       }
+
       return true;
     }),
 ];
@@ -127,6 +129,7 @@ router.get('/join', ensureAuthenticated, (req, res) => {
   if (req.user.is_member || req.user.is_admin) {
     return res.redirect('/');
   }
+
   res.render('join', { errors: [] });
 });
 
@@ -152,6 +155,7 @@ router.get('/admin-join', ensureAuthenticated, (req, res) => {
   if (req.user.is_admin) {
     return res.redirect('/');
   }
+  
   res.render('admin-join', { errors: [] });
 });
 
