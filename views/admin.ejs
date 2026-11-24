@@ -5,7 +5,7 @@
   <a href="/" class="btn">Back to Feed</a>
 </div>
 
-<p class="guest-notice">Manage clubhouse members and administrator permissions.</p>
+<p class="guest-notice">Manage members and administrator permissions.</p>
 
 <div class="table-wrapper">
   <table class="admin-table">
@@ -27,11 +27,11 @@
           <td class="username"><%= user.username %></td>
           <td>
             <% if (user.is_admin) { %>
-              <span class="badge">ADMIN</span>
+              <span class="badge badge-admin">ADMIN</span>
             <% } else if (user.is_member) { %>
-              <span class="badge">MEMBER</span>
+              <span class="badge badge-member">MEMBER</span>
             <% } else { %>
-              <span class="badge badge-muted">GUEST</span>
+              <span class="badge badge-guest">GUEST</span>
             <% } %>
           </td>
           <td><%= new Date(user.created_at).toLocaleDateString() %></td>
@@ -52,7 +52,7 @@
                   </button>
                 </form>
               <% } else { %>
-                <span class="meta">(You)</span>
+                <span class="meta admin-meta">(You)</span>
               <% } %>
             </div>
           </td>
