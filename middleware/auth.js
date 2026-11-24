@@ -22,6 +22,19 @@ export function ensureGuest(req, res, next) {
   res.redirect('/');
 }
 
+export function ensureMember(req, res, next) {
+  if (req.isAuthenticated() && (req.user.is_member || req.user.is_admin)) {
+    return next();
+  }
+
+  res.status(403).render('error', {
+    status: 403,
+    title: 'Members Only',
+    message: 'You must become a member before applying for admin privileges.',
+  });
+}
+
+
 export function ensureAdmin(req, res, next) {
   if (req.isAuthenticated() && req.user.is_admin) {
     return next();
