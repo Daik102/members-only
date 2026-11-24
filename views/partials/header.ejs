@@ -3,38 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secret Clubhouse</title>
+  <title><%= title %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <nav class="navbar">
-    <a href="/" class="brand">Secret Clubhouse</a>
-    <div class="nav-links">
-      <% if (currentUser) { %>
-        <span>
-          Hi, <span class="username"><%= currentUser.username %></span>
+    <div class="nav-links-container">
+      <a href="/" class="brand"><span class="logo">▶</span>The Hideout</a>
+      <div class="nav-links">
+        <% if (currentUser) { %>
           <% if (currentUser.is_admin) { %>
-            <span class="badge">ADMIN</span>
+            <a href="/admin"  class="btn">Dashboard</a>
           <% } else if (currentUser.is_member) { %>
-            <span class="badge">MEMBER</span>
+            <a href="/admin-join" class="btn">Admin</a>
+          <% } else { %>
+            <a href="/join" class="btn">Join</a>
           <% } %>
-        </span>
-        <% if (!currentUser.is_member && !currentUser.is_admin) { %>
-          <a href="/join" class="btn">Join Club</a>
-        <% } %>
-        <% if (currentUser.is_admin) { %>
-          <a href="/admin" class="btn">Dashboard</a>
+          <form action="/logout" method="POST">
+            <button type="submit" class="btn">Log Out</button>
+          </form>
         <% } else { %>
-          <a href="/admin-join" class="btn">Admin</a>
+          <a href="/login" class="btn">Log In</a>
+          <a href="/signup" class="btn">Sign Up</a>
         <% } %>
-        <form action="/logout" method="POST" class="inline-form">
-          <button type="submit" class="btn">Log Out</button>
-        </form>
-      <% } else { %>
-        <a href="/login" class="btn">Log In</a>
-        <a href="/signup" class="btn btn-primary">Sign Up</a>
-      <% } %>
+      </div>
     </div>
+    <% if (currentUser) { %>
+      <span class="username-container">
+        Hi, <span class="username"><%= currentUser.username %></span>
+        <% if (currentUser.is_admin) { %>
+          <span class="badge badge-admin">ADMIN</span>
+        <% } else if (currentUser.is_member) { %>
+          <span class="badge badge-member">MEMBER</span>
+        <% } %>
+      </span>
+    <% } %>
   </nav>
 
   <% if (error) { %>
