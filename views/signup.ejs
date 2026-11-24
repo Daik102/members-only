@@ -1,6 +1,9 @@
 <%- include('partials/header') %>
 
-<h2>Create an Account</h2>
+<div class="feed-header">
+  <h2>Create an Account</h2>
+  <a href="/" class="btn">Back to Feed</a>
+</div>
 
 <% if (errors && errors.length > 0) { %>
   <div class="alert">
@@ -66,9 +69,11 @@
       minlength="6" 
     />
   </div>
-  <button type="submit" class="btn btn-primary">Sign Up</button>
+  <div class="form-actions">
+     <button type="submit" class="btn btn-primary">Sign Up</button>
+  </div>
 </form>
 
-<p>Already have an account? <a href="/login">Log in here</a>.</p>
+<p class="link-container">Already have an account? <a href="/login">Log in here</a>.</p>
 
 <%- include('partials/footer') %>

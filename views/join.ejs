@@ -1,7 +1,10 @@
 <%- include('partials/header') %>
 
-<h2>Join the Secret Clubhouse</h2>
-<p class="guest-notice">Enter the secret passcode to reveal post authors and timestamps.</p>
+<div class="feed-header">
+  <h2>Join the Hideout</h2>
+  <a href="/" class="btn">Back to Feed</a>
+</div>
+<p class="guest-notice">Enter the member passcode to reveal post authors and timestamps.</p>
 
 <% if (errors && errors.length > 0) { %>
   <div class="alert">
@@ -15,18 +18,15 @@
 
 <form action="/join" method="POST">
   <div class="form-group">
-    <label for="passcode">Secret Passcode</label>
+    <label for="passcode">Member Passcode</label>
     <input id="passcode" type="password" name="passcode" required />
   </div>
 
   <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Unlock Membership</button>
-    <a href="/">Cancel</a>
+    <button type="submit" class="btn btn-primary">Unlock</button>
   </div>
 </form>
 
-<div class="secret-container">
-  <p id="secret-area" class="secret-area">Secret Area</p>
-</div>
+<p class="passcode-container">Passcode: opensesame</p>
 
 <%- include('partials/footer') %>

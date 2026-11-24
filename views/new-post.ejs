@@ -1,6 +1,9 @@
 <%- include('partials/header') %>
 
-<h2>Post a Secret Message</h2>
+<div class="feed-header">
+  <h2>Post a Message</h2>
+  <a href="/" class="btn">Back to Feed</a>
+</div>
 
 <% if (errors && errors.length > 0) { %>
   <div class="alert">
@@ -34,9 +37,8 @@
       maxlength="2000"
     ><%= oldInput.content || '' %></textarea>
   </div>
-  <div class="publish-btn-container">
-    <a href="/" class="btn">Back</a>
-    <button type="submit" class="btn btn-primary">Publish Post</button>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Publish</button>
   </div>
 </form>
 

@@ -1,6 +1,9 @@
 <%- include('partials/header') %>
 
-<h2>Log In</h2>
+<div class="feed-header">
+  <h2>Log In</h2>
+  <a href="/" class="btn">Back to Feed</a>
+</div>
 
 <% if (errors && errors.length > 0) { %>
   <div class="alert">
@@ -27,9 +30,11 @@
     <label for="password">Password</label>
     <input id="password" type="password" name="password"  required/>
   </div>
-  <button type="submit" class="btn">Log In</button>
+  <div class="form-actions">
+     <button type="submit" class="btn btn-primary">Log In</button>
+  </div>
 </form>
 
-<p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
+<p class="link-container">Don't have an account? <a href="/signup">Sign up here</a>.</p>
 
 <%- include('partials/footer') %>

@@ -1,11 +1,11 @@
 <%- include('partials/header') %>
 
-<section class="card card-error">
-  <h2><%= title || 'Something went wrong' %></h2>
+<section class="card">
+  <div class="feed-header">
+    <h2><%= title || 'Something went wrong' %></h2>
+    <a href="/" class="btn">Back to Feed</a>
+  </div>
   <p><%= message || 'An unexpected error occurred on the server.' %></p>
-  <p>
-    <a href="/" class="btn">Back to Clubhouse Feed</a>
-  </p>
 </section>
 
 <%- include('partials/footer') %>
