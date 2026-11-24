@@ -198,7 +198,7 @@ router.post('/admin/users/:id/toggle-member', ensureAdmin, async (req, res, next
   try {
     const targetId = req.params.id;
     await pool.query(
-      'UPDATE users SET is_member = NOT is_member WHERE id = $1',
+      'UPDATE users SET is_member = NOT is_member WHERE id = $1 AND is_admin = FALSE',
       [targetId]
     );
     res.redirect('/admin');
