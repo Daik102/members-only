@@ -41,7 +41,12 @@
       Posted by:
       <span class="author-name"><%= canSeeDetails ? post.author : 'Anonymous' %></span>
       &nbsp;
-      <%= canSeeDetails ? new Date(post.created_at).toLocaleDateString() : '**/**/****' %>
+      <% if (canSeeDetails) { %>
+        <time class="local-date" datetime="<%= new Date(post.created_at).toISOString() %>"></time>
+      <% } else { %>
+        ********
+      <% } %>
+
     </div>
   </article>
 <% }) %>

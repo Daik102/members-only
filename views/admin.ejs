@@ -34,7 +34,9 @@
               <span class="badge badge-guest">GUEST</span>
             <% } %>
           </td>
-          <td><%= new Date(user.created_at).toLocaleDateString() %></td>
+          <td>
+            <time class="local-date" datetime="<%= new Date(user.created_at).toISOString() %>"></time>
+          </td>
           <td>
             <div class="table-actions">
               <% if (!user.is_admin) { %>
