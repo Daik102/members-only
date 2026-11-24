@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { pool } from '../config/db.js';
-import { ensureAuthenticated, ensureAdmin } from '../middleware/auth.js';
+import { ensureAuthenticated, ensureMember, ensureAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -25,10 +25,10 @@ const memberValidation = [
   body('passcode')
     .trim()
     .notEmpty()
-    .withMessage('Please enter the secret passcode.')
+    .withMessage('Please enter the member passcode.')
     .custom((value) => {
       if (value !== process.env.CLUB_PASSCODE) {
-        throw new Error('Incorrect secret passcode.');
+        throw new Error('Incorrect member passcode.');
       }
 
       return true;
@@ -58,7 +58,7 @@ router.get('/', async (req, res, next) => {
       JOIN users ON posts.user_id = users.id
       ORDER BY posts.created_at DESC
     `);
-    res.render('index', { posts });
+    res.render('index', { posts, title: 'The Hideout' });
   } catch (err) {
     next(err);
   }
@@ -66,7 +66,7 @@ router.get('/', async (req, res, next) => {
 
 // New post form page (Authenticated users only)
 router.get('/posts/new', ensureAuthenticated, (req, res) => {
-  res.render('new-post', { errors: [], oldInput: {} });
+  res.render('new-post', { errors: [], oldInput: {}, title: 'New Post' });
 });
 
 // Create post
@@ -78,6 +78,7 @@ router.post('/posts', ensureAuthenticated, postValidation, async (req, res, next
     return res.status(400).render('new-post', {
       errors: errors.array(),
       oldInput: { title, content },
+      title: 'New Post',
     });
   }
 
@@ -130,7 +131,7 @@ router.get('/join', ensureAuthenticated, (req, res) => {
     return res.redirect('/');
   }
 
-  res.render('join', { errors: [] });
+  res.render('join', { errors: [], title: 'Join' });
 });
 
 router.post('/join', ensureAuthenticated, memberValidation, async (req, res, next) => {
@@ -140,7 +141,7 @@ router.post('/join', ensureAuthenticated, memberValidation, async (req, res, nex
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).render('join', { errors: errors.array() });
+    return res.status(400).render('join', { errors: errors.array(), title: 'Join' });
   }
 
   try {
@@ -151,29 +152,26 @@ router.post('/join', ensureAuthenticated, memberValidation, async (req, res, nex
   }
 });
 
-router.get('/admin-join', ensureAuthenticated, (req, res) => {
+router.get('/admin-join', ensureMember, (req, res) => {
   if (req.user.is_admin) {
     return res.redirect('/');
   }
-  
-  res.render('admin-join', { errors: [] });
+
+  res.render('admin-join', { errors: [], title: 'Admin' });
 });
 
-router.post('/admin-join', ensureAuthenticated, adminValidation, async (req, res, next) => {
+router.post('/admin-join', ensureMember, adminValidation, async (req, res, next) => {
   if (req.user.is_admin) {
     return res.redirect('/');
   }
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).render('admin-join', { errors: errors.array() });
+    return res.status(400).render('admin-join', { errors: errors.array(), title: 'Admin' });
   }
 
   try {
-    await pool.query(
-      'UPDATE users SET is_admin = TRUE, is_member = TRUE WHERE id = $1',
-      [req.user.id]
-    );
+    await pool.query('UPDATE users SET is_admin = TRUE WHERE id = $1', [req.user.id]);
     res.redirect('/');
   } catch (err) {
     next(err);
@@ -189,7 +187,7 @@ router.get('/admin', ensureAdmin, async (req, res, next) => {
       FROM users
       ORDER BY id ASC
     `);
-    res.render('admin', { users });
+    res.render('admin', { users, title: 'Admin Dashboard' });
   } catch (err) {
     next(err);
   }
