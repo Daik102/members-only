@@ -70,7 +70,7 @@ const loginValidation = [
 
 // --- SIGN UP ---
 router.get('/signup', ensureGuest, (req, res) => {
-  res.render('signup', { errors: [], oldInput: {} });
+  res.render('signup', { errors: [], oldInput: {}, title: 'Sign Up' });
 });
 
 router.post('/signup', ensureGuest, signupValidation, async (req, res, next) => {
@@ -120,7 +120,7 @@ router.post('/signup', ensureGuest, signupValidation, async (req, res, next) => 
 
 // --- LOG IN ---
 router.get('/login', ensureGuest, (req, res) => {
-  res.render('login', { errors: [], oldInput: {} });
+  res.render('login', { errors: [], oldInput: {}, title: 'Log In' });
 });
 
 router.post('/login', ensureGuest, loginValidation, (req, res, next) => {
@@ -132,6 +132,7 @@ router.post('/login', ensureGuest, loginValidation, (req, res, next) => {
     return res.status(400).render('login', {
       errors: errors.array(),
       oldInput: { username },
+      title: 'Log In',
     });
   }
 
@@ -146,6 +147,7 @@ router.post('/login', ensureGuest, loginValidation, (req, res, next) => {
       return res.status(401).render('login', {
         errors: [{ msg: info?.message || 'Invalid credentials.' }],
         oldInput: { username },
+        title: 'Log In',
       });
     }
 
